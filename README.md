@@ -1,6 +1,11 @@
 # M480BSP_SPI_SDCARD_FATFS
  M480BSP_SPI_SDCARD_FATFS
 
+
+update @ 2022/01/14
+
+1. update FATFS library to R0.14b and enable FF_FS_EXFAT
+
 update @ 2021/12/29
 
 1. Scenario notice:

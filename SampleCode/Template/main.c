@@ -16,7 +16,7 @@ volatile uint32_t counter_tick = 0;
 
 #define DRIVE_NUMBER    0       /* Physical drive number */
 #define DRIVE_NAME      "0:"    /* The drive name string for drive number 0 */
-FATFS g_FatFs[_DRIVES];     /* File system object for logical drive */
+FATFS g_FatFs[FF_VOLUMES];     /* File system object for logical drive */
 char  g_buff[512];          /* Buffer for read / write data */
 
 /*_____ M A C R O S ________________________________________________________*/
@@ -151,78 +151,78 @@ void put_rc(FRESULT rc)
     printf(_T("rc=%u FR_%s\n"), (UINT)rc, p);
 }
 
-uint8_t Explore_Disk (char* path , uint8_t recu_level)
-{
-	FRESULT res;
-	FILINFO fno;
-	DIR dir;
-	char *fn;
-	char tmp[30];
-	
-	res = f_opendir(&dir, path);
-	
-	if (res == FR_OK) 
-	{
-		printf("%s\n\r",path);
-		while(1) 
-		{
-			res = f_readdir(&dir, &fno);
-			if (res != FR_OK || fno.fname[0] == 0) 
-				break;
-			fn = fno.fname;
-			strcpy(tmp, fn); 
-			if(recu_level == 1)
-			{
-				printf(" |__%s\n\r",fno.fname);
-			}
-			else if(recu_level == 2)
-			{
-				printf("     |__%s\n\r",fno.fname);
-			}
-			else if(recu_level == 3)
-			{
-				printf("         |__%s\n\r",fno.fname);
-			}
-			else if(recu_level == 4)
-			{
-				printf("             |__%s\n\r",fno.fname);
-			}
-			else if(recu_level == 5)
-			{
-				printf("                 |__%s\n\r",fno.fname);
-			}
-			
-			if((fno.fattrib & AM_MASK) == AM_DIR)
-			{
-				sprintf(tmp,"%s/%s",path,fno.fname);
-			}
+//uint8_t Explore_Disk (char* path , uint8_t recu_level)
+//{
+//	FRESULT res;
+//	FILINFO fno;
+//	DIR dir;
+//	char *fn;
+//	char tmp[30];
+//	
+//	res = f_opendir(&dir, path);
+//	
+//	if (res == FR_OK) 
+//	{
+//		printf("%s\n\r",path);
+//		while(1) 
+//		{
+//			res = f_readdir(&dir, &fno);
+//			if (res != FR_OK || fno.fname[0] == 0) 
+//				break;
+//			fn = fno.fname;
+//			strcpy(tmp, fn); 
+//			if(recu_level == 1)
+//			{
+//				printf(" |__%s\n\r",fno.fname);
+//			}
+//			else if(recu_level == 2)
+//			{
+//				printf("     |__%s\n\r",fno.fname);
+//			}
+//			else if(recu_level == 3)
+//			{
+//				printf("         |__%s\n\r",fno.fname);
+//			}
+//			else if(recu_level == 4)
+//			{
+//				printf("             |__%s\n\r",fno.fname);
+//			}
+//			else if(recu_level == 5)
+//			{
+//				printf("                 |__%s\n\r",fno.fname);
+//			}
+//			
+//			if((fno.fattrib & AM_MASK) == AM_DIR)
+//			{
+//				sprintf(tmp,"%s/%s",path,fno.fname);
+//			}
 
-			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 1))
-			{
-				Explore_Disk(tmp, 2);
-			}
-			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 2))
-			{
-				Explore_Disk(tmp, 3);
-			}
-			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 3))
-			{
-				Explore_Disk(tmp, 3);
-			}
-			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 4))
-			{
-				Explore_Disk(tmp, 3);
-			}
-			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 5))
-			{
-				Explore_Disk(tmp, 3);
-			}
+//			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 1))
+//			{
+//				Explore_Disk(tmp, 2);
+//			}
+//			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 2))
+//			{
+//				Explore_Disk(tmp, 3);
+//			}
+//			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 3))
+//			{
+//				Explore_Disk(tmp, 3);
+//			}
+//			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 4))
+//			{
+//				Explore_Disk(tmp, 3);
+//			}
+//			if(((fno.fattrib & AM_MASK) == AM_DIR)&&(recu_level == 5))
+//			{
+//				Explore_Disk(tmp, 3);
+//			}
 
 
-		}
-	}
-	return res;
-}
+//		}
+//	}
+//	return res;
+//}
 
 
 void SD_FATFS_Init(void)
@@ -232,14 +232,14 @@ void SD_FATFS_Init(void)
 	/* Initializes the physical disk drive */
 	 res = (FRESULT)disk_initialize(DRIVE_NUMBER);
 	
-	 if (res != STA_OK)
+	 if (res != FR_OK)
 	 {
 		 put_rc(res);
 		 printf("\n\nInitialize SD card fail.\n");
 	 }
 	
 	 /* Registers a work area to the FatFs module */
-	 res = f_mount(DRIVE_NUMBER, &g_FatFs[0]);
+	 res = f_mount(&g_FatFs[0] , "", 0);
 	
 	 if (res != FR_OK)
 	 {
@@ -257,17 +257,29 @@ void SD_FATFS_Demo(void)
 	FATFS *fs; 	 /* Pointer to file system object */
 	DIR dir;		 /* Directory object */
 	FRESULT res;
-	char  *ptr2 = NULL;
+//	char  *ptr2 = NULL;
 
 	FIL file;
 	UINT count;
-
+    static const BYTE ft[] = {0, 12, 16, 32};
 
 	/* Opens an exsisting directory and creates the directory object for subsequent calls */
 	put_rc(f_opendir(&dir, DRIVE_NAME));
-		
-	if (f_getfree(ptr2, (DWORD *)&freeCluster, &fs) == FR_OK)
-	 printf(",	%10u bytes free\n", freeCluster * fs->csize * 512);
+
+	#if 1
+	put_rc( f_getfree(DRIVE_NAME, (DWORD*)&freeCluster, &fs));
+	printf("FAT type = FAT%u\nBytes/Cluster = %lu\nNumber of FATs = %u\n"
+		   "Root DIR entries = %u\nSectors/FAT = %lu\nNumber of clusters = %lu\n"
+		   "FAT start (lba) = %lu\nDIR start (lba,cluster) = %lu\nData start (lba) = %lu\n\n...",
+		   ft[fs->fs_type & 3], fs->csize * 512UL, fs->n_fats,
+		   fs->n_rootdir, fs->fsize, fs->n_fatent - 2,
+		   fs->fatbase, fs->dirbase, fs->database
+		  );
+
+	#else
+	if (f_getfree(DRIVE_NAME, (DWORD *)&freeCluster, &fs) == FR_OK)
+	 printf(",	%10lu bytes free\n", freeCluster * fs->csize * 512);
+	#endif
 	
 	/* File read / write case */
 	/* Open file and set it to readable / writable mode */
@@ -276,13 +288,13 @@ void SD_FATFS_Demo(void)
 	 if (res == FR_OK)
 	 {
 		 /* Move file pointer to end of file (offset = file.fsize) */
-		 f_lseek(&file, file.fsize);
+		 f_lseek(&file, f_size(&file));
 		 /* Write something to file pointer */
 		 f_write(&file, "hello ", 6, &count);
 		 /* Move file pointer to begin of file (offset = 0) */
 		 f_lseek(&file, 0);
 		 /* Read something from file pointer */
-		 f_read(&file, g_buff, file.fsize, &count);
+		 f_read(&file, g_buff, f_size(&file), &count);
 		 printf("Read data from file test.txt : \n[%s]\n", g_buff);
 		 /* Close file */
 		 f_close(&file);

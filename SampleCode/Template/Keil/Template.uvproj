@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>Project</TargetName>
+      <TargetName>Project_FF014b</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -363,7 +363,7 @@
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
@@ -377,7 +377,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\Library\CMSIS\Include;..\..\..\Library\Device\Nuvoton\M480\Include;..\..\..\Library\StdDriver\inc;..\..\Template;..\FF8\src</IncludePath>
+              <IncludePath>..\..\..\Library\CMSIS\Include;..\..\..\Library\Device\Nuvoton\M480\Include;..\..\..\Library\StdDriver\inc;..\..\Template;..\FF014b\source</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -486,20 +486,30 @@
               <FileType>1</FileType>
               <FilePath>..\sdcard.c</FilePath>
             </File>
-            <File>
-              <FileName>diskio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\FF8\src\diskio.c</FilePath>
-            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>FF014b</GroupName>
+          <Files>
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FF8\src\ff.c</FilePath>
+              <FilePath>..\FF014b\source\ff.c</FilePath>
             </File>
             <File>
-              <FileName>ccsbcs.c</FileName>
+              <FileName>ffunicode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FF8\src\option\ccsbcs.c</FilePath>
+              <FilePath>..\FF014b\source\ffunicode.c</FilePath>
+            </File>
+            <File>
+              <FileName>ffsystem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FF014b\source\ffsystem.c</FilePath>
+            </File>
+            <File>
+              <FileName>diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FF014b\source\diskio.c</FilePath>
             </File>
           </Files>
         </Group>
