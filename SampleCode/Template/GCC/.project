@@ -52,7 +52,7 @@
 		<link>
 			<name>Library/gpio.c</name>
 			<type>1</type>
-			<location>D:/SourceCode/_Avery_M480/M480BSP_SPI_SDCARD_FATFS/Library/StdDriver/src/gpio.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/Library/StdDriver/src/gpio.c</locationURI>
 		</link>
 		<link>
 			<name>Library/retarget.c</name>
@@ -67,7 +67,7 @@
 		<link>
 			<name>Library/sys.c</name>
 			<type>1</type>
-			<location>D:/SourceCode/_Avery_M480/M480BSP_SPI_SDCARD_FATFS/Library/StdDriver/src/sys.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/Library/StdDriver/src/sys.c</locationURI>
 		</link>
 		<link>
 			<name>Library/timer.c</name>
